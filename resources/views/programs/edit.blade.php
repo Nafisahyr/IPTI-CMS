@@ -11,17 +11,11 @@
                     placeholder="Enter program name">
             </div>
 
-            <div>
-                <label for="edit_link_{{ $program->id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Link</label>
-                <input type="url" id="edit_link_{{ $program->id }}" name="link" value="{{ $program->link }}"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                    placeholder="https://example.com">
-            </div>
 
             <div>
                 <label for="edit_image_{{ $program->id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program Image</label>
                 <input type="file" name="image" id="edit_image_{{ $program->id }}"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
+                    class="w-full px-3 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
                     accept="image/*">
                 <div class="mt-2">
                     <p class="text-sm text-gray-500 dark:text-gray-300">Current Image:</p>

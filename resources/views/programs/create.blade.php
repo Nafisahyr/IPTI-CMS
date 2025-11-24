@@ -9,7 +9,7 @@
                     placeholder="Enter program name">
             </div>
 
-            <div class="grid gap-2 mb-2 md:grid-cols-2">
+            
             <div>
                 <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program Image *</label>
                 <input type="file" name="image" id="image"
@@ -18,8 +18,8 @@
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">PNG, JPG, JPEG up to 5MB</p>
             </div>
 
-            
-            </div>
+
+
 
             <div>
                 <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>

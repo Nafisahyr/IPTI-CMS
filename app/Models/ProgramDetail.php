@@ -26,6 +26,6 @@ class ProgramDetail extends Model
 
     public function structures()
     {
-        return $this->hasMany(CurriculumStructure::class, 'program_details_id');
+        return $this->hasMany(CurriculumStructure::class, 'program_detail_id');
     }
 }

@@ -9,13 +9,13 @@ class CurriculumStructure extends Model
 {
     use HasFactory;
     protected $fillable = [
-    'program_details_id',
+    'program_detail_id',
     'year',
     'description',
 
     ];
     public function programDetail()
     {
-        return $this->belongsTo(ProgramDetail::class, 'program_details_id');
+        return $this->belongsTo(ProgramDetail::class, 'program_detail_id');
     }
 }

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="max-w-screen-xl mx-auto p-6">
-        <!-- Flash Messages -->
+        <!-- Toast Container -->
         <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-3 w-80 max-w-full"></div>
 
         <!-- Flash Messages Data Elements -->
@@ -16,48 +16,79 @@
             <div id="flash-error" data-type="error" data-message="{{ session('error') }}" style="display: none;"></div>
         @endif
 
+        <nav class="flex pb-5" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                <li class="inline-flex items-center">
+                    <a href="#"
+                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-sky-900 dark:text-gray-400 dark:hover:text-white">
+                        Admissions
+                    </a>
+                </li>
+            </ol>
+        </nav>
+
         <!-- Header Section -->
         <div class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Admissions</h1>
             </div>
 
-            <!-- Add admission Button -->
+            <!-- Add Admission Button -->
             <button data-modal-target="addAdmissionModal" data-modal-toggle="addAdmissionModal"
-                class="inline-flex items-center px-4 py-2  text-white  font-medium rounded-lg bg-sky-800  hover:bg-sky-950  dark:bg-sky-950   dark:hover:bg-sky-800 focus:ring-4 focus:ring-amber-500 focus:outline-none dark:focus:ring-amber-500 shadow-xl transition-all duration-200 hover:scale-110">
-                <svg class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
+                class="inline-flex items-center px-4 py-3 text-white font-medium rounded-lg bg-sky-700 hover:bg-sky-800 dark:bg-sky-600 dark:hover:bg-sky-700 focus:ring-4 focus:ring-sky-200 dark:focus:ring-sky-800 shadow-lg transition-all duration-200 hover:shadow-xl">
+                <svg class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
                     </path>
                 </svg>
-                Add Admissions
+                Add Admission
             </button>
         </div>
 
-        <!-- admissions List -->
+        <!-- Admissions List -->
         @if ($admissions->count())
             <x-table>
                 <x-slot name="head">
-                    <th class="px-6 py-3">Image</th>
-                    <th class="px-6 py-3">Actions</th>
+                    <th
+                        class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        Image</th>
+                    <th
+                        class="px-6 py-4 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                        Actions</th>
                 </x-slot>
 
                 <x-slot name="body">
                     @foreach ($admissions as $admission)
                         <tr
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150">
+                            <!-- Image Column -->
                             <td class="px-6 py-4">
-                                <img src="{{ asset('storage/' . $admission->image) }}"
-                                    class="w-20 h-20 object-cover rounded-lg shadow-sm" alt="{{ $admission->name }}">
+                                <div class="flex items-center space-x-4">
+                                    <img src="{{ asset('storage/' . $admission->image) }}" alt="Admission Image"
+                                        class="w-20 h-20 object-cover rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                            {{ $admission->name ?? 'Admission Image' }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                            Uploaded: {{ $admission->created_at->format('M j, Y') }}
+                                        </p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                                            Size: {{ round(filesize(public_path('storage/' . $admission->image)) / 1024) }}
+                                            KB
+                                        </p>
+                                    </div>
+                                </div>
                             </td>
+
+                            <!-- Actions Column -->
                             <td class="px-6 py-4">
-                                <div class="flex space-x-3">
+                                <div class="flex flex-wrap gap-2">
                                     <!-- Edit Button -->
                                     <button data-modal-target="editAdmissionModal{{ $admission->id }}"
                                         data-modal-toggle="editAdmissionModal{{ $admission->id }}"
-                                        class="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-                                        <svg class="w-5 h-5 inline me-1" fill="none" stroke="currentColor"
-                                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        class="inline-flex items-center gap-2 px-3 py-2 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-lg transition-colors dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800 dark:hover:bg-amber-900/50">
+                                        <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
                                             </path>
@@ -72,9 +103,9 @@
                                         @method('DELETE')
                                         <button type="submit"
                                             onclick="return confirm('Are you sure you want to delete this admission?')"
-                                            class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 font-medium">
-                                            <svg class="w-5 h-5 inline me-1" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            class="inline-flex items-center gap-2 px-3 py-2 text-xs font-medium text-red-700 bg-red-50 hover:bg-red-100 border border-red-200 rounded-lg transition-colors dark:bg-red-900/30 dark:text-red-300 dark:border-red-800 dark:hover:bg-red-900/50">
+                                            <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                                                 </path>
@@ -82,6 +113,19 @@
                                             Delete
                                         </button>
                                     </form>
+
+                                    <!-- View Button -->
+                                    <a href="{{ asset('storage/' . $admission->image) }}" target="_blank"
+                                        class="inline-flex items-center gap-2 px-3 py-2 text-xs font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800 dark:hover:bg-blue-900/50">
+                                        <svg class="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        View
+                                    </a>
                                 </div>
                             </td>
                         </tr>
@@ -89,25 +133,18 @@
                 </x-slot>
             </x-table>
         @else
-            <div class="text-center py-12">
-                <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                    </path>
-                </svg>
-                <h3 class="mt-4 text-lg font-medium text-gray-900 dark:text-white">No admissions yet</h3>
-                <p class="mt-2 text-gray-500 dark:text-gray-400">Get started by creating your first admission.</p>
-                <div class="mt-6">
-                    <button data-modal-target="addAdmissionModal" data-modal-toggle="addAdmissionModal"
-                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        <svg class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Add Admission
-                    </button>
+            <!-- Empty State -->
+            <div
+                class="text-center py-16 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
+                <div class="max-w-md mx-auto">
+                    <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-500 mb-4" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No admissions yet</h3>
+                    <p class="text-gray-500 dark:text-gray-400 mb-6">Get started by adding your first admission image.</p>
                 </div>
             </div>
         @endif
@@ -165,7 +202,7 @@
     </style>
 
     <script>
-        // Toast configuration
+        // Toast configuration - TAMPILAN SEPERTI SEMULA
         const toastTypes = {
             success: {
                 bg: 'bg-green-500',

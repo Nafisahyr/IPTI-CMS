@@ -1,276 +1,330 @@
 @extends('layout')
 
-@section('title', 'Create Programs Detail')
-
 @section('content')
+
     <div class="max-w-screen-xl mx-auto p-6">
-        <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-3 w-80 max-w-full"></div>
-
-        <!-- Flash Messages Data Elements -->
-        @if (session('success'))
-            <div id="flash-success" data-type="success" data-message="{{ session('success') }}" style="display: none;"></div>
-        @endif
-
-        @if (session('error'))
-            <div id="flash-error" data-type="error" data-message="{{ session('error') }}" style="display: none;"></div>
-        @endif
-
-        <!-- Breadcrumb Navigation -->
         <nav class="flex pb-5" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                <li class="inline-flex items-center">
-                    <a href="/programs"
-                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+            <ol class="inline-flex items-center space-x-1 md:space-x-2">
+                <li>
+                    <a href="{{ route('programs.index') }}" class="text-sm font-medium text-gray-700 hover:text-blue-600">
                         Programs
                     </a>
                 </li>
                 <li>
                     <div class="flex items-center">
-                        <svg class="rtl:rotate-180 w-3 h-3 text-gray-400 mx-1" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <svg class="w-3 h-3 mx-1 text-gray-400" fill="none" viewBox="0 0 6 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 9 4-4-4-4" />
                         </svg>
-                        <a href="#"
-                            class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">Create
-                            Program
-                            Detail 2/2</a>
+                        <span class="text-sm font-medium text-gray-700">Create Program Detail (2/2)</span>
                     </div>
                 </li>
             </ol>
         </nav>
 
-
-        <!-- Header Section -->
-        <div class="flex justify-between items-center mb-8">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Create Program Detail</h1>
+        <div class="max-w-4xl mx-auto bg-white shadow-lg rounded-xl p-6 border border-gray-100">
+            <div class="mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">
+                    Add Curriculum Structure – {{ $program->name }}
+                </h2>
+                <p class="text-gray-600">Add the curriculum structure by year for this program (minimum 3 years required)
+                </p>
             </div>
-        </div>
 
-        <div class="mx-auto w-40 px-4">
-            <ol
-                class="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500  rounded-lg  dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
-                <li class="flex items-center text-gray-500 dark:text-gray-400">
-                    <span
-                        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-gray-500 rounded-full shrink-0 dark:border-gray-400">
-                        1
-                    </span>
-                    <svg class="w-3 h-3 ms-2 sm:ms-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                        fill="none" viewBox="0 0 12 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m7 9 4-4-4-4M1 9l4-4-4-4" />
+            {{-- INFO / SUCCESS MESSAGE --}}
+            @if (session('info'))
+                <div class="bg-blue-50 text-blue-700 p-4 rounded-lg mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                            clip-rule="evenodd"></path>
                     </svg>
-                </li>
-                <li class="flex items-center text-blue-600 dark:text-blue-500">
-                    <span
-                        class="flex items-center justify-center w-5 h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 dark:border-blue-500">
-                        2
-                    </span>
+                    {{ session('info') }}
+                </div>
+            @endif
+            @if (session('success'))
+                <div class="bg-green-50 text-green-700 p-4 rounded-lg mb-4 flex items-center">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                    {{ session('success') }}
+                </div>
+            @endif
 
-                </li>
-            </ol>
-        </div>
-    </div>
+            {{-- VALIDATION MESSAGE --}}
+            <div id="validationMessage" class="hidden bg-yellow-50 text-yellow-700 p-4 rounded-lg mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span>Minimum 3 years of curriculum structure are required to save.</span>
+            </div>
 
+            {{-- FORM WRAPPER --}}
+            <form action="{{ route('structure.store.all', $programDetail->id) }}" method="POST" id="curriculumForm">
+                @csrf
 
-
-    <!-- Form Section -->
-    <div class="mx-auto px-4">
-        <!-- Card Container -->
-        <div class="bg-white border border-gray-200 rounded-xl shadow-md overflow-hidden">
-
-            <!-- Informasi Detail -->
-            <div class="p-10 space-y-6">
-
-                <div class="flex justify-center">
-                    <div>
-                        <h1 class="text-3xl font-bold text-gray-700">Curriculum Structure</h1>
-                    </div>
+                <div class="overflow-x-auto rounded-lg border border-gray-200 mb-4">
+                    <table class="w-full" id="structureTable">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="py-3 px-4 text-left font-medium text-gray-700 w-1/5">Year</th>
+                                <th class="py-3 px-4 text-left font-medium text-gray-700 w-3/5">Description</th>
+                                <th class="py-3 px-4 text-center font-medium text-gray-700 w-1/5">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody" class="divide-y divide-gray-200">
+                            {{-- Existing rows from DB --}}
+                            @if ($structures->count() > 0)
+                                @foreach ($structures as $s)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="py-3 px-4">
+                                            <input type="text" name="year[]" value="{{ $s->year }}"
+                                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                                required>
+                                        </td>
+                                        <td class="py-3 px-4">
+                                            <textarea name="description[]"
+                                                class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                                rows="2" required>{{ $s->description }}</textarea>
+                                        </td>
+                                        <td class="py-3 px-4 text-center">
+                                            @if ($structures->count() > 3)
+                                                <button type="button"
+                                                    class="deleteRow bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md transition flex items-center justify-center mx-auto">
+                                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                        viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                                        </path>
+                                                    </svg>
+                                                    Delete
+                                                </button>
+                                            @else
+                                                <span class="text-gray-400 text-sm">Required</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr id="emptyState" class="text-center">
+                                    <td colspan="3" class="py-8 px-4 text-gray-500">
+                                        <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                            </path>
+                                        </svg>
+                                        <p class="mt-2">No curriculum structure added yet. Click "Add Row" to get started.
+                                        </p>
+                                        <p class="text-sm mt-1 text-yellow-600">Minimum 3 years required.</p>
+                                    </td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
 
-                <form id="courseForm" action="{{ route('structure.store', $programDetail->id) }}" method="POST">
-                    @csrf
-                    <!-- Description Field -->
+                <div class="flex justify-between items-center">
+                    <button type="button" id="addRow"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition flex items-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        Add Row
+                    </button>
 
-
-
-                    <div class="grid md:grid-cols-5 gap-4 border-b border-gray-200 p-5">
-                        <!-- Description - 4 kolom -->
-                        <div class="md:col-span-4">
-                            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
-                                Description <span class="text-red-500">*</span>
-                            </label>
-                            <textarea id="description" name="description" required rows="4"
-                                placeholder="Tuliskan prospek karir setelah menyelesaikan course..."
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
-                        </div>
-
-                        <!-- Button + Degree - 1 kolom -->
-                        <div class="md:col-span-1">
-                            <!-- Add Button di atas -->
-                            <button type="button" id="addStructure"
-                                class="flex items-center justify-center gap-2 w-full px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors border border-blue-200 mt-6 mb-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                Add
-                            </button>
-
-                            <!-- Degree Field di bawah button -->
-                            <label for="year" class="block text-sm font-medium text-gray-700 mb-1">
-                                Year <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" id="year" name="year" required
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                        </div>
+                    <div class="flex items-center">
+                        <span id="rowCount" class="text-sm text-gray-600 mr-4">
+                            @if ($structures->count() > 0)
+                                {{ $structures->count() }}/3 years added
+                            @else
+                                0/3 years added
+                            @endif
+                        </span>
+                        <button type="submit" id="saveButton"
+                            class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md transition flex items-center disabled:bg-gray-400 disabled:cursor-not-allowed"
+                            @if ($structures->count() < 3) disabled @endif>
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                            Save All
+                        </button>
                     </div>
-
-                    <!-- Table preview struktur kurikulum -->
-                    <div class="mt-8">
-                        <h3 class="text-lg font-semibold mb-3 text-gray-700">Preview Curriculum Structure</h3>
-                        <table class="w-full text-sm text-left text-gray-700 border border-gray-300 rounded-lg">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="px-4 py-2 border">#</th>
-                                    <th class="px-4 py-2 border">Year</th>
-                                    <th class="px-4 py-2 border">Description</th>
-                                    <th class="px-4 py-2 border text-center">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="structureTableBody">
-                                <tr id="noDataRow">
-                                    <td colspan="4" class="text-center py-4 text-gray-500">Belum ada struktur
-                                        ditambahkan.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-
-
-
-
-
-                    <!-- Submit Button Section -->
-                    <div class="border-t border-gray-200 pt-6 mt-8">
-                        <div class="flex justify-end space-x-3">
-                            <!-- Cancel Button -->
-
-                            <div class="flex">
-                                <!-- Previous Button -->
-
-                                <a href="#"
-                                    class="flex items-center justify-center px-4 h-10 me-3 text-base font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                    <svg class="w-3.5 h-3.5 me-2 rtl:rotate-180" aria-hidden="true"
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                            stroke-width="2" d="M13 5H1m0 0 4 4M1 5l4-4" />
-                                    </svg>
-                                    Previous
-                                </a>
-                                <button type="submit"
-                                    class="flex gap-2 items-center justify-center px-4 h-10 me-3 text-base  font-medium border border-gray-300 rounded-lg text-green-600 bg-green-50 hover:bg-green-100 transition-colors dark:bg-green-900/20 dark:text-green-400 dark:hover:bg-green-900/30">
-                                    <svg class="w-5 h-5 <svg class="w-4 h-4 flex-shrink-0" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                        </path>
-                                    </svg>
-                                    Save
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-    </div>
-@endsection
 
-@section('scripts')
+    {{-- SCRIPT --}}
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let structures = [];
-            let structureCount = 0;
+        document.addEventListener("DOMContentLoaded", function() {
+            const tableBody = document.getElementById("tableBody");
+            const addRowBtn = document.getElementById("addRow");
+            const saveButton = document.getElementById("saveButton");
+            const validationMessage = document.getElementById("validationMessage");
+            const rowCount = document.getElementById("rowCount");
+            const emptyState = document.getElementById("emptyState");
+            const form = document.getElementById("curriculumForm");
 
-            const addBtn = document.getElementById('addStructure');
-            const yearInput = document.getElementById('year');
-            const descInput = document.getElementById('description');
-            const tableBody = document.getElementById('structureTableBody');
-            const noDataRow = document.getElementById('noDataRow');
-            const form = document.getElementById('courseForm');
+            // Function to count rows (excluding empty state)
+            function countRows() {
+                const rows = tableBody.querySelectorAll('tr');
+                let count = 0;
 
-            // Klik tombol Tambah Struktur
-            addBtn.addEventListener('click', () => {
-                const year = yearInput.value.trim();
-                const description = descInput.value.trim();
+                rows.forEach(row => {
+                    // Only count rows that have input fields (not empty state)
+                    if (row.querySelector('input[name="year[]"]')) {
+                        count++;
+                    }
+                });
 
-                if (!year || !description) {
-                    alert('Tahun dan deskripsi harus diisi!');
-                    return;
+                return count;
+            }
+
+            // Function to update UI based on row count
+            function updateUI() {
+                const rowCountValue = countRows();
+
+                // Update row count display
+                rowCount.textContent = `${rowCountValue}/3 years added`;
+
+                // Enable/disable save button
+                if (rowCountValue >= 3) {
+                    saveButton.disabled = false;
+                    validationMessage.classList.add('hidden');
+                } else {
+                    saveButton.disabled = true;
+                    if (rowCountValue > 0) {
+                        validationMessage.classList.remove('hidden');
+                    } else {
+                        validationMessage.classList.add('hidden');
+                    }
                 }
 
-                // Hilangkan pesan "belum ada data"
-                if (noDataRow) noDataRow.remove();
+                // Show/hide delete buttons for required rows (first 3)
+                const rows = tableBody.querySelectorAll('tr');
+                rows.forEach((row, index) => {
+                    const deleteButton = row.querySelector('.deleteRow');
+                    const requiredText = row.querySelector('.required-text');
 
-                structures.push({
-                    year,
-                    description
-                });
-                structureCount++;
-
-                // Render tabel
-                renderTable();
-
-                // Tambahkan input hidden agar ikut terkirim saat submit
-                const hiddenContainer = document.createElement('div');
-                hiddenContainer.innerHTML = `
-      <input type="hidden" name="structures[${structureCount}][year]" value="${year}">
-      <input type="hidden" name="structures[${structureCount}][description]" value="${description}">
-    `;
-                form.appendChild(hiddenContainer);
-
-                // Kosongkan input
-                yearInput.value = '';
-                descInput.value = '';
-            });
-
-            // Fungsi render tabel
-            function renderTable() {
-                tableBody.innerHTML = '';
-                structures.forEach((s, i) => {
-                    const row = document.createElement('tr');
-                    row.classList.add('border-b');
-                    row.innerHTML = `
-        <td class="border px-4 py-2 text-center">${i + 1}</td>
-        <td class="border px-4 py-2 text-center">${s.year}</td>
-        <td class="border px-4 py-2">${s.description}</td>
-        <td class="border px-4 py-2 text-center">
-          <button type="button" class="text-red-600 hover:underline" onclick="removeStructure(${i})">Hapus</button>
-        </td>
-      `;
-                    tableBody.appendChild(row);
+                    if (deleteButton) {
+                        if (rowCountValue <= 3 && index < 3) {
+                            // Hide delete button and show required text for first 3 rows
+                            deleteButton.classList.add('hidden');
+                            if (!requiredText) {
+                                const requiredSpan = document.createElement('span');
+                                requiredSpan.className = 'text-gray-400 text-sm required-text';
+                                requiredSpan.textContent = 'Required';
+                                deleteButton.parentNode.appendChild(requiredSpan);
+                            }
+                        } else {
+                            // Show delete button and remove required text
+                            deleteButton.classList.remove('hidden');
+                            if (requiredText) {
+                                requiredText.remove();
+                            }
+                        }
+                    }
                 });
             }
 
-            // Hapus struktur
-            window.removeStructure = (index) => {
-                structures.splice(index, 1);
-                renderTable();
-
-                // Kalau kosong lagi, tampilkan pesan
-                if (structures.length === 0) {
-                    tableBody.innerHTML = `
-        <tr id="noDataRow">
-          <td colspan="4" class="text-center py-4 text-gray-500">Belum ada struktur ditambahkan.</td>
-        </tr>
-      `;
+            // ADD ROW
+            addRowBtn.addEventListener("click", function() {
+                // Remove empty state if it exists
+                if (emptyState) {
+                    emptyState.remove();
                 }
-            };
+
+                const row = document.createElement("tr");
+                row.classList.add("hover:bg-gray-50");
+
+                row.innerHTML = `
+                <td class="py-3 px-4">
+                    <input type="text" name="year[]"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                        placeholder="e.g., Year 1" required>
+                </td>
+                <td class="py-3 px-4">
+                    <textarea name="description[]"
+                            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            rows="2" placeholder="Enter curriculum description for this year" required></textarea>
+                </td>
+                <td class="py-3 px-4 text-center">
+                    <button type="button"
+                            class="deleteRow bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-md transition flex items-center justify-center mx-auto">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Delete
+                    </button>
+                </td>
+            `;
+                tableBody.appendChild(row);
+                updateUI();
+            });
+
+            // DELETE ROW (event delegation)
+            document.addEventListener("click", function(e) {
+                if (e.target.classList.contains("deleteRow") || e.target.closest(".deleteRow")) {
+                    const row = e.target.closest("tr");
+                    const rowCountValue = countRows();
+
+                    // Prevent deletion if it would result in less than 3 rows
+                    if (rowCountValue <= 3) {
+                        validationMessage.classList.remove('hidden');
+                        validationMessage.innerHTML = `
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span>Cannot delete. Minimum 3 years of curriculum structure are required.</span>
+                    `;
+                        return;
+                    }
+
+                    row.remove();
+
+                    // Show empty state if no rows left
+                    if (countRows() === 0) {
+                        const emptyRow = document.createElement("tr");
+                        emptyRow.id = "emptyState";
+                        emptyRow.innerHTML = `
+                        <td colspan="3" class="py-8 px-4 text-gray-500 text-center">
+                            <svg class="w-12 h-12 mx-auto text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <p class="mt-2">No curriculum structure added yet. Click "Add Row" to get started.</p>
+                            <p class="text-sm mt-1 text-yellow-600">Minimum 3 years required.</p>
+                        </td>
+                    `;
+                        tableBody.appendChild(emptyRow);
+                    }
+
+                    updateUI();
+                }
+            });
+
+            // FORM SUBMISSION VALIDATION
+            form.addEventListener('submit', function(e) {
+                if (countRows() < 3) {
+                    e.preventDefault();
+                    validationMessage.classList.remove('hidden');
+                    validationMessage.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }
+            });
+
+            // Initialize UI on page load
+            updateUI();
         });
     </script>
+
 @endsection

@@ -8,36 +8,38 @@ use Illuminate\Http\Request;
 
 class ProgramDetailController extends Controller
 {
+    // STEP 1 - Form program detail
     public function create($programId)
     {
         $program = Program::findOrFail($programId);
+
+        // kembali ke view step 1
         return view('programDetails.create', compact('program'));
     }
 
+    // STEP 1 - Simpan program detail
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'program_id' => 'required|exists:programs,id|unique:program_details,program_id',
-        'description' => 'required|string',
-        'degree' => 'required|string',
-        'credits_course' => 'required|numeric',
-        'period' => 'required|string',
-        'competency' => 'nullable|string',
-        'career_prospect' => 'nullable|string',
-    ]);
+    {
+        $validated = $request->validate([
+            'program_id' => 'required|exists:programs,id|unique:program_details,program_id',
+            'description' => 'required|string',
+            'degree' => 'required|string',
+            'credits_course' => 'required|numeric',
+            'period' => 'required|string',
+            'competency' => 'nullable|string',
+            'career_prospect' => 'nullable|string',
+        ]);
 
-    // Simpan program detail
-    $detail = ProgramDetail::create($validated);
+        // Simpan program detail
+        $detail = ProgramDetail::create($validated);
 
-    // Redirect ke halaman tambah struktur
-    return redirect()->route('structure.create', ['programDetail' => $detail->id]);
-}
-
-
+        // Redirect ke halaman struktur kurikulum (STEP 2)
+        return redirect()->route('structure.create', ['id' => $detail->id]);
+    }
 
     public function show(ProgramDetail $programDetail)
     {
-        $programDetail->load('curriculumStructures');
+        $programDetail->load('structures');
         return view('programDetails.index', compact('programDetail'));
     }
 
@@ -61,5 +63,17 @@ class ProgramDetailController extends Controller
 
         return redirect()->route('programdetail.show', $programDetail->id)
             ->with('success', 'Program detail berhasil diperbarui.');
+    }
+
+    public function destroy(ProgramDetail $programDetail)
+    {
+        // Hapus semua structure yang terkait
+        $programDetail->structures()->delete();
+
+        // Hapus program detail
+        $programDetail->delete();
+
+        return redirect()->route('programs.index')
+            ->with('success', 'Program detail and structures deleted successfully.');
     }
 }
