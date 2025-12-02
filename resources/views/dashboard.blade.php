@@ -21,7 +21,7 @@
     <div class="flex justify-between items-center mb-8">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
-            <p class="text-gray-600 mt-2">Overview of your programs, facilities, and events</p>
+
         </div>
         <div class="text-sm text-gray-500">
             {{ \Carbon\Carbon::now()->format('l, F j, Y') }}

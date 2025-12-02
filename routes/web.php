@@ -9,8 +9,10 @@ use App\Http\Controllers\{
     EventController,
     BannerController,
     AdmissionController,
-    DashboardController
+    DashboardController,
+    EventNewController
 };
+use App\Models\EventNew;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,5 +138,21 @@ Route::prefix('structure')->group(function () {
         ->name('programdetail.destroy');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
+
+Route::prefix('eventnew')->group(function () {
+    Route::get('/eventnews', [EventNewController::class, 'index'])->name('eventNews.index');
+    Route::get('/events/{eventId}/news/create', [EventNewController::class, 'create'])->name('eventNews.create');
+    Route::post('/events/{eventId}/news', [EventNewController::class, 'store'])->name('eventNews.store');
+
+    // PERBAIKI INI: Gunakan 'eventNews.show' bukan 'eventNews.index'
+    Route::get('/events/{eventId}/news', [EventNewController::class, 'show'])->name('eventNews.show');
+
+    Route::get('/eventnews/{eventNewId}/edit', [EventNewController::class, 'edit'])->name('eventNews.edit');
+    Route::put('/eventnews/{eventNewId}', [EventNewController::class, 'update'])->name('eventNews.update');
+    Route::delete('/eventnews/{eventNewId}', [EventNewController::class, 'destroy'])->name('eventNews.destroy');
+    Route::delete('/eventnews', [EventNewController::class, 'destroyAll'])->name('eventNews.destroyAll');
+    Route::delete('/events/{eventId}/news', [EventNewController::class, 'destroyAllByEvent'])->name('eventNews.destroyAllByEvent');
+    Route::post('/events/{eventId}/news/multiple', [EventNewController::class, 'storeMultiple'])->name('eventNews.storeMultiple');
+});

@@ -24,21 +24,11 @@
         <div id="flash-info" data-type="info" data-message="{{ session('info') }}" style="display: none;"></div>
     @endif
 
-    <nav class="flex pb-5" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-            <li class="inline-flex items-center">
-                <a href="#" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-sky-900 dark:text-gray-400 dark:hover:text-white">
-                    Facilities
-                </a>
-            </li>
-        </ol>
-    </nav>
 
     <!-- Header Section -->
     <div class="flex justify-between items-center mb-8">
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Facilities</h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">Manage campus facilities and resources</p>
         </div>
 
         <!-- Add Facility Button -->
@@ -163,13 +153,6 @@
                 </svg>
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No facilities yet</h3>
                 <p class="text-gray-500 dark:text-gray-400 mb-6">Get started by adding your first facility.</p>
-                <button data-modal-target="addFacilityModal" data-modal-toggle="addFacilityModal"
-                    class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 rounded-lg transition-colors">
-                    <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Add First Facility
-                </button>
             </div>
         </div>
     @endif

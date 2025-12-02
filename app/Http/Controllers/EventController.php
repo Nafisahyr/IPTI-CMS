@@ -13,9 +13,12 @@ class EventController extends Controller
      */
     public function index()
     {
-        $events = Event::all();
+        // PASTIKAN menggunakan withCount untuk menghitung jumlah news
+        $events = Event::withCount('news')->latest()->get();
+
         return view('events.index', compact('events'));
     }
+
 
     /**
      * Tampilkan form tambah event.
@@ -34,7 +37,6 @@ class EventController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'thumbnail' => 'required|image|mimes:jpeg,jpg,png|max:2048',
-            'link' => 'nullable|url',
         ]);
 
         try {

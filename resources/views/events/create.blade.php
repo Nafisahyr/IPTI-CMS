@@ -10,7 +10,6 @@
                     placeholder="Enter event title">
             </div>
 
-            <div class="grid gap-2 mb-2 md:grid-cols-2">
                 <div>
                     <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
                         Image *</label>
@@ -19,16 +18,6 @@
                         accept="image/*" required>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300">PNG, JPG, JPEG up to 5MB</p>
                 </div>
-
-                <div>
-                    <label for="link"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Link</label>
-                    <input type="url" id="link" name="link" value="{{ old('link') }}"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
-                        placeholder="https://example.com">
-                </div>
-
-            </div>
 
             <div>
                 <label for="description"

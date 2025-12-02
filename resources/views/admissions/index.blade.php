@@ -16,16 +16,6 @@
             <div id="flash-error" data-type="error" data-message="{{ session('error') }}" style="display: none;"></div>
         @endif
 
-        <nav class="flex pb-5" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                <li class="inline-flex items-center">
-                    <a href="#"
-                        class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-sky-900 dark:text-gray-400 dark:hover:text-white">
-                        Admissions
-                    </a>
-                </li>
-            </ol>
-        </nav>
 
         <!-- Header Section -->
         <div class="flex justify-between items-center mb-8">

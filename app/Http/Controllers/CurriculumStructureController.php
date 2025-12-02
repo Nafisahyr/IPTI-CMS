@@ -57,26 +57,22 @@ class CurriculumStructureController extends Controller
             ->with('success', 'Semua struktur kurikulum berhasil disimpan!');
     }
 
-   public function storeAll(Request $request, $programDetailId)
-{
-    // hapus data lama
-    CurriculumStructure::where('program_detail_id', $programDetailId)->delete();
+    public function storeAll(Request $request, $programDetailId)
+    {
+        // hapus data lama
+        CurriculumStructure::where('program_detail_id', $programDetailId)->delete();
 
-    // simpan data baru
-    foreach ($request->year as $index => $year) {
-        CurriculumStructure::create([
-            'program_detail_id' => $programDetailId,
-            'year' => $request->year[$index],
-            'description' => $request->description[$index],
-        ]);
+        // simpan data baru
+        foreach ($request->year as $index => $year) {
+            CurriculumStructure::create([
+                'program_detail_id' => $programDetailId,
+                'year' => $request->year[$index],
+                'description' => $request->description[$index],
+            ]);
+        }
+
+        return redirect()
+            ->route('programdetail.show', $programDetailId)
+            ->with('success', 'Curriculum structure updated!');
     }
-
-    return redirect()
-        ->route('programdetail.show', $programDetailId)
-        ->with('success', 'Curriculum structure updated!');
-}
-
-
-
-
 }

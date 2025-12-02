@@ -62,7 +62,7 @@ class ProgramDetailController extends Controller
         $programDetail->update($validated);
 
         return redirect()->route('programdetail.show', $programDetail->id)
-            ->with('success', 'Program detail berhasil diperbarui.');
+            ->with('success', 'Program detail updated!');
     }
 
     public function destroy(ProgramDetail $programDetail)

@@ -5,18 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class EventNew extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'event_id',
         'title',
-        'description',
-        'thumbnail',
+        'publisher',
+        'link',
 
     ];
-    public function news()
+    public function event()
     {
-        return $this->hasMany(EventNew::class, 'event_id');
+        return $this->belongsTo(\App\Models\Event::class);
     }
 }
