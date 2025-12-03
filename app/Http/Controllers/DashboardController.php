@@ -18,29 +18,31 @@ class DashboardController extends Controller
 
         $recentPrograms = Program::latest()->take(5)->get();
 
-        // Safe way to get upcoming events
-        $upcomingEvents = $this->getUpcomingEvents();
+        // Load events with their news count and eager load thumbnail
+        $recentEvents = $this->getRecentEvents();
 
         return view('dashboard', compact(
             'programsCount',
             'facilitiesCount',
             'eventsCount',
             'recentPrograms',
-            'upcomingEvents'
+            'recentEvents'
         ));
     }
 
-    private function getUpcomingEvents()
+    private function getRecentEvents()
     {
-        // Check if events table has date column
-        if (Schema::hasTable('events') && Schema::hasColumn('events', 'date')) {
-            return Event::where('date', '>=', now())
-                ->orderBy('date')
-                ->take(5)
-                ->get();
+        // Check if events table exists
+        if (!Schema::hasTable('events')) {
+            return collect(); // Return empty collection
         }
 
-        // Fallback: just get latest events
-        return Event::latest()->take(5)->get();
+        // Load events with news count
+        $events = Event::withCount('news')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return $events;
     }
 }

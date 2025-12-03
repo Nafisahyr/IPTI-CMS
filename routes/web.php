@@ -8,23 +8,35 @@ use App\Http\Controllers\{
     FacilityController,
     EventController,
     BannerController,
-    AdmissionController,
+    TuitionFeeController,
     DashboardController,
-    EventNewController
+    EventNewController,
+    authController
 };
 use App\Models\EventNew;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| Auth Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
 
-Route::prefix('api')->group(function () {
-    Route::get('/programs', [ProgramController::class, 'apiIndex']);
-    Route::get('/facilities', [FacilityController::class, 'apiIndex']);
-    Route::get('/admissions', [AdmissionController::class, 'apiIndex']);
-});
+// Proses Login (POST)
+Route::post('/login', [authController::class, 'login'])->name('login.process');
+
+// Halaman Register (opsional - untuk buat admin baru)
+Route::get('/register', function () {
+    return view('auth.register');
+})->name('register');
+
+// Proses Register (POST)
+Route::post('/register', [authController::class, 'registerUser'])->name('register.process');
+
+// Logout
+Route::post('/logout', [authController::class, 'logout'])->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -56,9 +68,9 @@ Route::get('/banners', [BannerController::class, 'create'])->name('banners.index
 Route::post('/banners', [BannerController::class, 'store'])->name('banners.store');
 Route::resource('banners', BannerController::class);
 
-Route::get('/admissions', [AdmissionController::class, 'create'])->name('admissions.index');
-Route::post('/admissions', [AdmissionController::class, 'store'])->name('admissions.store');
-Route::resource('admissions', AdmissionController::class);
+Route::get('/tuitionFees', [tuitionFeeController::class, 'create'])->name('tuitionFees.index');
+Route::post('/tuitionFees', [tuitionFeeController::class, 'store'])->name('tuitionFees.store');
+Route::resource('tuitionFees', tuitionFeeController::class);
 
 /*
 |--------------------------------------------------------------------------

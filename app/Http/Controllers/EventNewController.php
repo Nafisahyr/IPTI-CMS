@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Models\EventNew;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class EventNewController extends Controller
 {
@@ -32,15 +31,20 @@ class EventNewController extends Controller
      */
     public function store(Request $request, $eventId)
     {
+        // Debug: cek data yang diterima
+        // dd($request->all());
+
         $request->validate([
-            'titles.*' => 'required|string|max:255',
-            'publishers.*' => 'required|string|max:255',
-            'links.*' => 'nullable|url',
+            'title.*' => 'required|string|max:255',
+            'publisher.*' => 'required|string|max:255',
+            'link.*' => 'nullable|url',
         ]);
 
         try {
             $eventNewsData = [];
-            foreach ($request->titles as $index => $title) {
+            $count = 0;
+
+            foreach ($request->title as $index => $title) {
                 // Skip jika title kosong
                 if (empty(trim($title))) {
                     continue;
@@ -49,11 +53,12 @@ class EventNewController extends Controller
                 $eventNewsData[] = [
                     'event_id'  => $eventId,
                     'title'     => $title,
-                    'publisher' => $request->publishers[$index] ?? '',
-                    'link'      => $request->links[$index] ?? null,
+                    'publisher' => $request->publisher[$index] ?? '',
+                    'link'      => $request->link[$index] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+                $count++;
             }
 
             // Insert semua data sekaligus
@@ -61,8 +66,10 @@ class EventNewController extends Controller
                 EventNew::insert($eventNewsData);
             }
 
-            return redirect()->route('eventNews.show', $eventId)
-                ->with('success', count($eventNewsData) . ' event news created successfully!');
+            // Redirect ke index dengan event ID
+            return redirect()->route('eventNews.index', ['event' => $eventId])
+                ->with('success', $count . ' event news created successfully!');
+
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Error: ' . $e->getMessage())
@@ -72,11 +79,12 @@ class EventNewController extends Controller
 
     /**
      * Tampilkan seluruh news milik 1 event
+     * DIPERBARUI: Menggunakan view index dengan parameter event
      */
     public function show($eventId)
     {
-        $event = Event::with('news')->findOrFail($eventId);
-        $eventNews = $event->news;
+        $event = Event::findOrFail($eventId);
+        $eventNews = EventNew::where('event_id', $eventId)->with('event')->latest()->get();
 
         return view('eventNews.index', compact('event', 'eventNews'));
     }
@@ -177,14 +185,16 @@ class EventNewController extends Controller
     public function storeMultiple(Request $request, $eventId)
     {
         $request->validate([
-            'titles.*' => 'required|string|max:255',
-            'publishers.*' => 'required|string|max:255',
-            'links.*' => 'nullable|url',
+            'title.*' => 'required|string|max:255',
+            'publisher.*' => 'required|string|max:255',
+            'link.*' => 'nullable|url',
         ]);
 
         try {
             $eventNewsData = [];
-            foreach ($request->titles as $index => $title) {
+            $count = 0;
+
+            foreach ($request->title as $index => $title) {
                 if (empty(trim($title))) {
                     continue;
                 }
@@ -192,11 +202,12 @@ class EventNewController extends Controller
                 $eventNewsData[] = [
                     'event_id'  => $eventId,
                     'title'     => $title,
-                    'publisher' => $request->publishers[$index] ?? '',
-                    'link'      => $request->links[$index] ?? null,
+                    'publisher' => $request->publisher[$index] ?? '',
+                    'link'      => $request->link[$index] ?? null,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
+                $count++;
             }
 
             if (!empty($eventNewsData)) {
@@ -204,35 +215,11 @@ class EventNewController extends Controller
             }
 
             return redirect()->route('eventNews.show', $eventId)
-                ->with('success', count($eventNewsData) . ' additional news created successfully!');
+                ->with('success', $count . ' additional news created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->with('error', 'Error: ' . $e->getMessage())
                 ->withInput();
         }
-    }
-
-    /**
-     * API list event news (jika dibutuhkan frontend lain)
-     */
-    public function apiIndex()
-    {
-        $eventNews = EventNew::with('event')->latest()->get();
-        return response()->json([
-            'success' => true,
-            'data' => $eventNews
-        ]);
-    }
-
-    /**
-     * API list event news by event (jika dibutuhkan frontend lain)
-     */
-    public function apiByEvent($eventId)
-    {
-        $eventNews = EventNew::where('event_id', $eventId)->with('event')->latest()->get();
-        return response()->json([
-            'success' => true,
-            'data' => $eventNews
-        ]);
     }
 }

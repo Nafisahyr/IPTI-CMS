@@ -17,8 +17,7 @@
         @endif
 
         @if (session('warning'))
-            <div id="flash-warning" data-type="warning" data-message="{{ session('warning') }}" style="display: none;">
-            </div>
+            <div id="flash-warning" data-type="warning" data-message="{{ session('warning') }}" style="display: none;"></div>
         @endif
 
         @if (session('info'))
@@ -187,14 +186,7 @@
                     </svg>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No events yet</h3>
                     <p class="text-gray-500 dark:text-gray-400 mb-6">Get started by creating your first event.</p>
-                    <button data-modal-target="addEventModal" data-modal-toggle="addEventModal"
-                        class="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-sky-600 hover:bg-sky-700 rounded-lg transition-colors">
-                        <svg class="w-4 h-4 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Create First Event
-                    </button>
+                    
                 </div>
             </div>
         @endif
@@ -251,8 +243,55 @@
         }
     </style>
 
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .toast {
+            animation: slideIn 0.3s ease-out forwards;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+        .toast.hiding {
+            animation: slideOut 0.3s ease-in forwards;
+        }
+
+        @keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .progress-bar {
+            animation: shrink 5s linear forwards;
+        }
+
+        @keyframes shrink {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+    </style>
+
     <script>
-        // Toast configuration - TAMPILAN SEPERTI SEMULA
+        // Toast configuration
         const toastTypes = {
             success: {
                 bg: 'bg-green-500',
@@ -305,7 +344,7 @@
             const toast = document.createElement('div');
             toast.id = toastId;
             toast.className =
-                `toast flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800 ${config.bg} text-black`;
+                `toast flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow-sm dark:text-gray-400 dark:bg-gray-800`;
 
             toast.innerHTML = `
             <div class="inline-flex items-center justify-center shrink-0 w-8 h-8 ${config.iconBg} ${config.iconColor} rounded-lg">
@@ -319,7 +358,7 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
                 </svg>
             </button>
-            <div class="absolute bottom-0 left-0 h-1 bg-white bg-opacity-30 progress-bar rounded-b-lg"></div>
+            <div class="absolute bottom-0 left-0 h-1 ${config.bg} progress-bar rounded-b-lg"></div>
         `;
 
             container.appendChild(toast);

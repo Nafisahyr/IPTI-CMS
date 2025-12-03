@@ -19,9 +19,9 @@
     <nav class="flex pb-5" aria-label="Breadcrumb">
         <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
             <li class="inline-flex items-center">
-                <a href="{{ route('dashboard') }}"
-                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-sky-900 dark:text-gray-400 dark:hover:text-white">
-                    Dashboard
+                <a href="{{ route('events.index') }}"
+                    class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600">
+                    Events
                 </a>
             </li>
             <li>
@@ -32,8 +32,9 @@
                             d="m1 9 4-4-4-4" />
                     </svg>
                     <a href="{{ route('eventNews.index') }}"
-                        class="ms-1 text-sm font-medium text-gray-700 hover:text-sky-900 md:ms-2 dark:text-gray-400 dark:hover:text-white">Event
-                        News</a>
+                        class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600">
+                        Event News
+                    </a>
                 </div>
             </li>
             <li>
@@ -43,196 +44,159 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="m1 9 4-4-4-4" />
                     </svg>
-                    <a href="#"
-                        class="ms-1 text-sm font-medium text-gray-700 hover:text-sky-900 md:ms-2 dark:text-gray-400 dark:hover:text-white">Edit</a>
+                    <span class="ms-1 text-sm font-medium text-gray-900">
+                        Edit News
+                    </span>
                 </div>
             </li>
         </ol>
     </nav>
 
     <!-- Header Section -->
-    <div class="flex justify-between items-center mb-8">
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Edit Event News</h1>
-        </div>
-    </div>
-
-    <!-- Tabs Navigation -->
-    <div class="sm:hidden">
-        <label for="tabs" class="sr-only"></label>
-        <select id="tabs"
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ">
-            <option>View</option>
-            <option selected>Edit</option>
-        </select>
-    </div>
-    <div class="hidden sm:block max-w-3xl mx-auto px-4">
-        <ul
-            class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex dark:divide-gray-700 dark:text-gray-400">
-            <li class="w-full focus-within:z-10">
-                <a href="{{ route('eventNews.show', $eventNew->event_id) }}"
-                    class="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 rounded-s-lg hover:text-gray-700 hover:bg-gray-50 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">View</a>
-            </li>
-            <li class="w-full focus-within:z-10">
-                <a href="{{ route('eventNews.edit', $eventNew->id) }}"
-                    class="inline-block w-full p-4 text-gray-900 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-lg active focus:outline-none dark:bg-gray-700 dark:text-white"
-                    aria-current="page">Edit</a>
-            </li>
-        </ul>
-    </div>
-
-    <!-- Card Container -->
-    <div class="bg-white rounded-xl shadow-md overflow-hidden mt-6">
-        <!-- Header dengan Title dan Actions -->
-        <div class="border-b border-gray-200 p-6">
-            <div class="flex justify-between items-start">
-                <div>
-                    <h1 class="text-2xl font-bold text-gray-700">{{ $eventNew->title }}</h1>
-                    <p class="text-gray-500 mt-1">Edit event news information</p>
-                </div>
+    <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800 mb-2">
+                    Edit News – {{ $eventNew->event->title }}
+                </h1>
+                <p class="text-gray-600">Update news article information</p>
             </div>
+            <a href="{{ route('eventNews.show', $eventNew->event_id) }}"
+                class="inline-flex items-center gap-2 px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Back to News
+            </a>
         </div>
 
-        <!-- FORM UPDATE EVENT NEWS -->
-        <form action="{{ route('eventNews.update', $eventNew->id) }}" method="POST" class="p-6">
-            @csrf
-            @method('PUT')
-
-            <div class="space-y-6">
-                <!-- Title -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                    <input
-                        type="text"
-                        name="title"
-                        value="{{ old('title', $eventNew->title) }}"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                        placeholder="Enter news title"
-                        required
-                    >
-                    @error('title')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Publisher -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Publisher</label>
-                    <input
-                        type="text"
-                        name="publisher"
-                        value="{{ old('publisher', $eventNew->publisher) }}"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                        placeholder="Enter publisher name"
-                        required
-                    >
-                    @error('publisher')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Link -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Link</label>
-                    <input
-                        type="url"
-                        name="link"
-                        value="{{ old('link', $eventNew->link) }}"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                        placeholder="https://example.com"
-                        required
-                    >
-                    @error('link')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <!-- Update Button -->
-                <div class="flex justify-end pt-6 border-t border-gray-200">
-                    <button type="submit"
-                        class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition">
-                        Update Event News
-                    </button>
-                </div>
-            </div>
-        </form>
-
-        <hr class="my-6">
-
-        <!-- FORM ADD MORE NEWS -->
-        <div class="p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Add More News to This Event</h2>
-
-            <form action="{{ route('eventNews.storeMultiple', $eventNew->event_id) }}" method="POST" id="addNewsForm">
-                @csrf
-
-                <div id="news-container" class="space-y-4">
-                    <!-- Initial empty row -->
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 news-row items-start p-4 bg-gray-50 rounded-lg border border-gray-200">
-                        <div class="md:col-span-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                            <input
-                                type="text"
-                                name="titles[]"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white"
-                                placeholder="Enter news title"
-                                required
-                            >
-                        </div>
-
-                        <div class="md:col-span-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Publisher</label>
-                            <input
-                                type="text"
-                                name="publishers[]"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white"
-                                placeholder="Enter publisher name"
-                                required
-                            >
-                        </div>
-
-                        <div class="md:col-span-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Link</label>
-                            <input
-                                type="url"
-                                name="links[]"
-                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white"
-                                placeholder="https://example.com"
-                            >
-                        </div>
-
-                        <div class="md:col-span-1 flex items-center justify-center pt-7">
-                            <button type="button" class="delete-news-btn bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                                title="Delete this row">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
+        <!-- Card Container -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+            <!-- Card Header -->
+            <div class="border-b border-gray-200 p-6">
+                <div class="flex items-center gap-3">
+                    <div class="p-3 bg-blue-50 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-semibold text-gray-800">Edit News Article</h2>
+                        <p class="text-gray-500 text-sm">Current title: {{ $eventNew->title }}</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Add More Button -->
-                <div class="mt-6">
-                    <button type="button" id="add-more-news"
-                        class="flex items-center gap-2 px-4 py-3 text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-all duration-200 font-medium">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                        </svg>
-                        Add More News
-                    </button>
-                </div>
+            <!-- FORM UPDATE EVENT NEWS -->
+            <form action="{{ route('eventNews.update', $eventNew->id) }}" method="POST" class="p-6">
+                @csrf
+                @method('PUT')
 
-                <!-- Add News Button -->
-                <div class="flex justify-end mt-6 pt-6 border-t border-gray-200">
-                    <button type="submit"
-                        class="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200">
-                        Add News
-                    </button>
+                <div class="space-y-6">
+                    <!-- Title -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Title
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="title"
+                            value="{{ old('title', $eventNew->title) }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            placeholder="Enter news title"
+                            required
+                        >
+                        @error('title')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Publisher -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                            Publisher
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="publisher"
+                            value="{{ old('publisher', $eventNew->publisher) }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            placeholder="Enter publisher name"
+                            required
+                        >
+                        @error('publisher')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Link -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Link (Optional)</label>
+                        <input
+                            type="url"
+                            name="link"
+                            value="{{ old('link', $eventNew->link) }}"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            placeholder="https://example.com"
+                        >
+                        @error('link')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Event Information (Read-only) -->
+                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Event Information</h3>
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                            <span class="text-gray-800 font-medium">{{ $eventNew->event->title }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end gap-3 pt-6 border-t border-gray-200">
+                        <a href="{{ route('eventNews.show', $eventNew->event_id) }}"
+                            class="px-5 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition font-medium">
+                            Cancel
+                        </a>
+                        <button type="submit"
+                            class="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                            </svg>
+                            Update News
+                        </button>
+                    </div>
                 </div>
             </form>
+
+            <!-- Delete Section -->
+            <div class="border-t border-gray-200 p-6 bg-red-50/30">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-800 mb-1">Delete News Article</h3>
+                        <p class="text-gray-600 text-sm">Once deleted, this action cannot be undone.</p>
+                    </div>
+                    <form action="{{ route('eventNews.destroy', $eventNew->id) }}" method="POST"
+                          onsubmit="return confirm('Are you sure you want to delete this news article?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="px-5 py-2.5 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition flex items-center gap-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Delete News
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -242,17 +206,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Toast notification system
     function showToast(message, type = 'success') {
         const toastContainer = document.getElementById('toast-container');
+        if (!toastContainer) return;
+
         const toast = document.createElement('div');
         const bgColor = type === 'success' ? 'bg-green-500' : 'bg-red-500';
         const icon = type === 'success' ?
             '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' :
             '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
 
-        toast.className = `${bgColor} text-white p-4 rounded-lg shadow-lg flex items-center space-x-3 transform transition-transform duration-300 ease-in-out`;
+        toast.className = `${bgColor} text-white p-4 rounded-lg shadow-lg flex items-center space-x-3 animate-slide-in`;
         toast.innerHTML = `
             ${icon}
-            <span class="flex-1">${message}</span>
-            <button class="text-white hover:text-gray-200 transition" onclick="this.parentElement.remove()">
+            <span class="flex-1 text-sm">${message}</span>
+            <button class="text-white/80 hover:text-white transition" onclick="this.parentElement.remove()">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -264,10 +230,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Auto remove after 5 seconds
         setTimeout(() => {
             if (toast.parentElement) {
-                toast.remove();
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
             }
         }, 5000);
     }
+
+    // Add CSS animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slide-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.3s ease-out;
+        }
+    `;
+    document.head.appendChild(style);
 
     // Show flash messages
     const flashSuccess = document.getElementById('flash-success');
@@ -281,177 +262,53 @@ document.addEventListener('DOMContentLoaded', function() {
         showToast(flashError.dataset.message, 'error');
     }
 
-    // Add more news functionality
-    const addMoreBtn = document.getElementById('add-more-news');
-    const newsContainer = document.getElementById('news-container');
-
-    addMoreBtn.addEventListener('click', function() {
-        const newRow = document.createElement('div');
-        newRow.className = 'grid grid-cols-1 md:grid-cols-12 gap-4 news-row items-start p-4 bg-gray-50 rounded-lg border border-gray-200';
-        newRow.innerHTML = `
-            <div class="md:col-span-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Title</label>
-                <input
-                    type="text"
-                    name="titles[]"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white"
-                    placeholder="Enter news title"
-                    required
-                >
-            </div>
-            <div class="md:col-span-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Publisher</label>
-                <input
-                    type="text"
-                    name="publishers[]"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white"
-                    placeholder="Enter publisher name"
-                    required
-                >
-            </div>
-            <div class="md:col-span-3">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Link</label>
-                <input
-                    type="url"
-                    name="links[]"
-                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition bg-white"
-                    placeholder="https://example.com"
-                >
-            </div>
-            <div class="md:col-span-1 flex items-center justify-center pt-7">
-                <button type="button" class="delete-news-btn bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-all duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                    title="Delete this row">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                        </path>
-                    </svg>
-                </button>
-            </div>
-        `;
-
-        newsContainer.appendChild(newRow);
-
-        // Add animation for new row
-        newRow.style.opacity = '0';
-        newRow.style.transform = 'translateY(-10px)';
-        setTimeout(() => {
-            newRow.style.transition = 'all 0.3s ease';
-            newRow.style.opacity = '1';
-            newRow.style.transform = 'translateY(0)';
-        }, 10);
-    });
-
-    // Remove news functionality
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.delete-news-btn')) {
-            const row = e.target.closest('.news-row');
-            const allRows = document.querySelectorAll('.news-row');
-
-            // Don't remove if it's the only row
-            if (allRows.length > 1) {
-                // Add removal animation
-                row.style.transition = 'all 0.3s ease';
-                row.style.opacity = '0';
-                row.style.transform = 'translateX(-100%)';
-
-                setTimeout(() => {
-                    row.remove();
-                    showToast('News row deleted successfully', 'success');
-                }, 300);
-            } else {
-                showToast('Cannot delete the last news row', 'error');
-            }
-        }
-    });
-
-    // Form validation for add news form
-    const addNewsForm = document.getElementById('addNewsForm');
-    addNewsForm.addEventListener('submit', function(e) {
-        const titleInputs = document.querySelectorAll('#addNewsForm input[name="titles[]"]');
-        const publisherInputs = document.querySelectorAll('#addNewsForm input[name="publishers[]"]');
-
-        let isValid = true;
-
-        titleInputs.forEach((input, index) => {
-            if (!input.value.trim()) {
-                isValid = false;
-                input.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-            } else {
-                input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-            }
-        });
-
-        publisherInputs.forEach((input, index) => {
-            if (!input.value.trim()) {
-                isValid = false;
-                input.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-            } else {
-                input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-            }
-        });
-
-        if (!isValid) {
-            e.preventDefault();
-            showToast('Please fill in all required fields', 'error');
-
-            // Scroll to first error
-            const firstError = document.querySelector('#addNewsForm .border-red-500');
-            if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstError.focus();
-            }
-        }
-    });
-
     // Form validation for edit form
     const editForm = document.querySelector('form[action*="update"]');
-    editForm.addEventListener('submit', function(e) {
-        const title = document.querySelector('input[name="title"]');
-        const publisher = document.querySelector('input[name="publisher"]');
-        const link = document.querySelector('input[name="link"]');
+    if (editForm) {
+        editForm.addEventListener('submit', function(e) {
+            const title = document.querySelector('input[name="title"]');
+            const publisher = document.querySelector('input[name="publisher"]');
+            const link = document.querySelector('input[name="link"]');
 
-        let isValid = true;
+            let isValid = true;
 
-        // Reset previous error states
-        [title, publisher, link].forEach(input => {
-            input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
-        });
+            // Reset previous error states
+            [title, publisher, link].forEach(input => {
+                input.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+            });
 
-        // Validate title
-        if (!title.value.trim()) {
-            isValid = false;
-            title.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-        }
-
-        // Validate publisher
-        if (!publisher.value.trim()) {
-            isValid = false;
-            publisher.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-        }
-
-        // Validate link
-        if (!link.value.trim()) {
-            isValid = false;
-            link.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-        } else if (!isValidUrl(link.value)) {
-            isValid = false;
-            link.classList.add('border-red-500', 'ring-2', 'ring-red-200');
-            showToast('Please enter a valid URL', 'error');
-        }
-
-        if (!isValid) {
-            e.preventDefault();
-            showToast('Please fill in all required fields correctly', 'error');
-
-            // Scroll to first error
-            const firstError = document.querySelector('.border-red-500');
-            if (firstError) {
-                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                firstError.focus();
+            // Validate title
+            if (!title.value.trim()) {
+                isValid = false;
+                title.classList.add('border-red-500', 'ring-2', 'ring-red-200');
             }
-        }
-    });
+
+            // Validate publisher
+            if (!publisher.value.trim()) {
+                isValid = false;
+                publisher.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+            }
+
+            // Validate link (only if provided)
+            if (link.value.trim() && !isValidUrl(link.value)) {
+                isValid = false;
+                link.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+                showToast('Please enter a valid URL', 'error');
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                showToast('Please fill in all required fields correctly', 'error');
+
+                // Scroll to first error
+                const firstError = document.querySelector('.border-red-500');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    firstError.focus();
+                }
+            }
+        });
+    }
 
     function isValidUrl(string) {
         try {

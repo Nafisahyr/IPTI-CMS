@@ -26,8 +26,8 @@
                         </svg>
                     </button>
                     <a href="" class="flex ms-2 md:me-24">
-                        <img src="https://tedjaindonesia.ac.id/wp-content/uploads/2025/03/image.png" class="h-12 me-3"
-                            alt="IPTI Logo" />
+                        <img src="{{ asset('storage/assets/LogoIpti.png') }}" class="h-12 me-3" alt="IPTI Logo">
+
                         <span class="self-center text-xl font-semibold sm:text-xl whitespace-nowrap dark:text-white">
                             Tedja Indonesia<br>
 
@@ -142,7 +142,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/admissions"
+                    <a href="/tuitionFees"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -150,7 +150,7 @@
                             <path fill="currentColor"
                                 d="M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h11l5 5v11q0 .825-.587 1.413T19 21zm2-4h10v-2H7zm0-4h10v-2H7zm8-4h4l-4-4zM7 9h5V7H7z" />
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Admission</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Tuition Fee</span>
                     </a>
                 </li>
                 <li>

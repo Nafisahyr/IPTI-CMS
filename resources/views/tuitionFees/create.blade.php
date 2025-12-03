@@ -1,9 +1,9 @@
-<x-modal id="addAdmissionModal" title="Add New Admission" :showButton="false">
-    <form method="POST" action="{{ route('admissions.store') }}" enctype="multipart/form-data">
+<x-modal id="addtuitionFeeModal" title="Add New tuitionFee" :showButton="false">
+    <form method="POST" action="{{ route('tuitionFees.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="grid gap-4 mb-4">
             <div>
-                <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Admission Image *</label>
+                <label for="image" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tuitionFee Image *</label>
                 <input type="file" name="image" id="image"
                     class="w-full px-3 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
                     accept="image/*" required>
@@ -13,7 +13,7 @@
 
         <div class="flex justify-end space-x-3">
             <button type="button"
-                    data-modal-hide="addAdmissionModal"
+                    data-modal-hide="addtuitionFeeModal"
                     class="px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                 Cancel
             </button>
@@ -22,7 +22,7 @@
                 <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
                 </svg>
-                Add Admission
+                Add tuitionFee
             </button>
         </div>
     </form>
