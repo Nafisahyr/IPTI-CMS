@@ -20,24 +20,25 @@ use App\Models\EventNew;
 | Auth Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
+// Di web.php atau routes/web.php
 
-// Proses Login (POST)
-Route::post('/login', [authController::class, 'login'])->name('login.process');
+// web.php
+Route::middleware('guest')->group(function () {
+    Route::get('/login', function () {
+        return view('auth.login');
+    })->name('login');
 
-// Halaman Register (opsional - untuk buat admin baru)
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+    // Hapus route register view karena sudah digabung
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'registerUser']);
+});
 
-// Proses Register (POST)
-Route::post('/register', [authController::class, 'registerUser'])->name('register.process');
-
-// Logout
-Route::post('/logout', [authController::class, 'logout'])->name('logout');
-
+Route::middleware('auth')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
