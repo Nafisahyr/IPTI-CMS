@@ -68,9 +68,8 @@
             <div class="flex flex-col items-center mb-10">
                 <div class="logo-glow mb-6">
                     <img src="{{ asset('storage/assets/LogoIpti.png') }}" alt="IPTI Logo"
-                        class="w-28 h-28 drop-shadow-lg">
+                        class="w-28 h-34 drop-shadow-lg">
                 </div>
-                <h1 class="text-4xl font-bold text-white tracking-wide mb-2">IPTI</h1>
                 <p class="text-sky-100/90 text-lg">Welcome Back</p>
                 <div class="w-24 h-1 bg-gradient-to-r from-sky-400 to-teal-500 rounded-full mt-3"></div>
             </div>

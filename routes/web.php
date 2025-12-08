@@ -10,7 +10,8 @@ use App\Http\Controllers\{
     TuitionFeeController,
     DashboardController,
     EventNewController,
-    AuthController
+    AuthController,
+    UserController
 };
 
 /*
@@ -25,7 +26,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -318,3 +319,11 @@ Route::get('/test-permissions', function () {
 Route::get('/test-middleware', function () {
     return 'Middleware test successful!';
 })->middleware(['auth', 'role_or_permission:admin|show-program']);
+
+// Profile routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [UserController::class, 'edit'])->name('users.edit');
+    Route::put('/profile', [UserController::class, 'update'])->name('users.update');
+    Route::post('/profile/avatar', [UserController::class, 'updateAvatar'])->name('profile.avatar.update');
+    Route::delete('/profile/avatar', [UserController::class, 'removeAvatar'])->name('profile.avatar.remove');
+});

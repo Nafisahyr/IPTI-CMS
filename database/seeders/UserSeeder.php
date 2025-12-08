@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('12345678'),
+            'avatar' => null,
         ]);
         $admin->assignRole('admin');
 
@@ -24,6 +25,7 @@ class UserSeeder extends Seeder
             'name' => 'marketing',
             'email' => 'marketing@gmail.com',
             'password' => bcrypt('12345678'),
+            'avatar'=> null,
         ]);
         $admin->assignRole('marketing');
 
@@ -31,6 +33,7 @@ class UserSeeder extends Seeder
             'name' => 'public_relations',
             'email' => 'publicRelations@gmail.com',
             'password' => bcrypt('12345678'),
+            'avatar'=> null,
         ]);
         $admin->assignRole('public_relations');
 
@@ -38,6 +41,7 @@ class UserSeeder extends Seeder
             'name' => 'finance',
             'email' => 'finance@gmail.com',
             'password' => bcrypt('12345678'),
+            'avatar'=> null,
         ]);
         $admin->assignRole('finance');
 
@@ -45,6 +49,7 @@ class UserSeeder extends Seeder
             'name' => 'lecturer',
             'email' => 'lecturer@gmail.com',
             'password' => bcrypt('12345678'),
+            'avatar'=> null,
         ]);
         $admin->assignRole('lecturer');
     }

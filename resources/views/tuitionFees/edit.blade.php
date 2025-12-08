@@ -8,7 +8,7 @@
             <div>
                 <label for="edit_image_{{ $tuitionFee->id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">tuitionFee Image</label>
                 <input type="file" name="image" id="edit_image_{{ $tuitionFee->id }}"
-                    class="w-full px-3 py-2 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
+                    class="w-full px-3  border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
                     accept="image/*">
                 <div class="mt-2">
                     <p class="text-sm text-gray-500 dark:text-gray-300">Current Image:</p>

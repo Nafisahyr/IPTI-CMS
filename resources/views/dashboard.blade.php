@@ -249,7 +249,6 @@
                                 </path>
                             </svg>
                             <p class="text-gray-500">No events available</p>
-                            <p class="text-sm text-gray-400 mt-1">Create your first event to get started</p>
                         </div>
                     @endif
                     <div class="mt-6">

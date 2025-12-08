@@ -46,7 +46,7 @@ class TuitionFeeController extends Controller
             ]);
 
             return redirect()->route('tuitionFees.index')
-                ->with('success', 'tuitionFee created successfully!');
+                ->with('success', 'Tuition fee created successfully!');
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage())->withInput();
         }
@@ -93,7 +93,7 @@ class TuitionFeeController extends Controller
             $tuitionFee->update($data);
 
             return redirect()->route('tuitionFees.index')
-                ->with('success', 'tuitionFee updated successfully!');
+                ->with('success', 'Tuition fee updated successfully!');
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage())->withInput();
         }
@@ -112,7 +112,7 @@ class TuitionFeeController extends Controller
             $tuitionFee->delete();
 
             return redirect()->route('tuitionFees.index')
-                ->with('success', 'tuitionFee deleted successfully!');
+                ->with('success', 'Tuition fee deleted successfully!');
         } catch (\Exception $e) {
             return back()->with('error', 'Error: ' . $e->getMessage());
         }
