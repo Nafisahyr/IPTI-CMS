@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,18 +51,24 @@
         }
     </style>
 </head>
+
 <body class="min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md glass-card rounded-3xl overflow-hidden relative">
         <!-- Decorative Elements -->
-        <div class="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-sky-400/20 to-teal-500/20 rounded-full blur-xl"></div>
-        <div class="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-sky-400/20 to-teal-500/20 rounded-full blur-xl"></div>
+        <div
+            class="absolute -top-20 -right-20 w-40 h-40 bg-gradient-to-br from-sky-400/20 to-teal-500/20 rounded-full blur-xl">
+        </div>
+        <div
+            class="absolute -bottom-20 -left-20 w-40 h-40 bg-gradient-to-tr from-sky-400/20 to-teal-500/20 rounded-full blur-xl">
+        </div>
 
         <!-- Main Content -->
         <div class="relative z-10 px-10 py-12">
             <!-- Logo -->
             <div class="flex flex-col items-center mb-10">
                 <div class="logo-glow mb-6">
-                    <img src="{{ asset('storage/assets/LogoIpti.png') }}" alt="IPTI Logo" class="w-28 h-28 drop-shadow-lg">
+                    <img src="{{ asset('storage/assets/LogoIpti.png') }}" alt="IPTI Logo"
+                        class="w-28 h-28 drop-shadow-lg">
                 </div>
                 <h1 class="text-4xl font-bold text-white tracking-wide mb-2">IPTI</h1>
                 <p class="text-sky-100/90 text-lg">Welcome Back</p>
@@ -69,23 +76,26 @@
             </div>
 
             <!-- Messages -->
-            @if(session('success'))
-                <div class="mb-6 p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm border border-green-500/30 rounded-xl text-white text-sm">
+            @if (session('success'))
+                <div
+                    class="mb-6 p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 backdrop-blur-sm border border-green-500/30 rounded-xl text-white text-sm">
                     <i class="fas fa-check-circle mr-2"></i>{{ session('success') }}
                 </div>
             @endif
 
-            @if(session('error'))
-                <div class="mb-6 p-4 bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-500/30 rounded-xl text-white text-sm">
+            @if (session('error'))
+                <div
+                    class="mb-6 p-4 bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-500/30 rounded-xl text-white text-sm">
                     <i class="fas fa-exclamation-circle mr-2"></i>{{ session('error') }}
                 </div>
             @endif
 
-            @if($errors->any())
-                <div class="mb-6 p-4 bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-500/30 rounded-xl text-white text-sm">
+            @if ($errors->any())
+                <div
+                    class="mb-6 p-4 bg-gradient-to-r from-red-500/20 to-pink-500/20 backdrop-blur-sm border border-red-500/30 rounded-xl text-white text-sm">
                     <i class="fas fa-exclamation-triangle mr-2"></i>
                     <ul class="mt-1 space-y-1">
-                        @foreach($errors->all() as $error)
+                        @foreach ($errors->all() as $error)
                             <li>• {{ $error }}</li>
                         @endforeach
                     </ul>
@@ -103,12 +113,10 @@
                             <label class="text-sky-100 text-sm font-medium">Email Address</label>
                         </div>
                         <div class="relative">
-                            <input type="email"
-                                   name="email"
-                                   placeholder="you@example.com"
-                                   value="{{ old('email') }}"
-                                   class="w-full px-4 pl-12 py-4 input-glass rounded-xl text-white placeholder-sky-200/60 outline-none transition-all duration-300 group-hover:border-sky-300/30"
-                                   required>
+                            <input type="email" name="email" placeholder="you@example.com"
+                                value="{{ old('email') }}"
+                                class="w-full px-4 pl-12 py-4 input-glass rounded-xl text-white placeholder-sky-200/60 outline-none transition-all duration-300 group-hover:border-sky-300/30"
+                                required>
                             <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
                                 <i class="fas fa-user text-sky-300/80"></i>
                             </div>
@@ -122,11 +130,9 @@
                             <label class="text-sky-100 text-sm font-medium">Password</label>
                         </div>
                         <div class="relative">
-                            <input type="password"
-                                   name="password"
-                                   placeholder="••••••••"
-                                   class="w-full px-4 pl-12 py-4 input-glass rounded-xl text-white placeholder-sky-200/60 outline-none transition-all duration-300 group-hover:border-sky-300/30"
-                                   required>
+                            <input type="password" name="password" placeholder="••••••••"
+                                class="w-full px-4 pl-12 py-4 input-glass rounded-xl text-white placeholder-sky-200/60 outline-none transition-all duration-300 group-hover:border-sky-300/30"
+                                required>
                             <div class="absolute left-4 top-1/2 transform -translate-y-1/2">
                                 <i class="fas fa-key text-sky-300/80"></i>
                             </div>
@@ -151,17 +157,19 @@
 
                     <!-- Submit Button -->
                     <button type="submit"
-                            class="w-full btn-glow text-white py-4 rounded-xl font-semibold text-lg mt-8 relative overflow-hidden group">
+                        class="w-full btn-glow text-white py-4 rounded-xl font-semibold text-lg mt-8 relative overflow-hidden group">
                         <span class="relative z-10 flex items-center justify-center">
                             <i class="fas fa-sign-in-alt mr-3"></i>
                             Login to Dashboard
                         </span>
-                        <div class="absolute inset-0 bg-gradient-to-r from-sky-500 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-sky-500 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        </div>
                     </button>
                 </div>
             </form>
 
-            
+
         </div>
     </div>
 
@@ -181,7 +189,7 @@
         const checkbox = document.querySelector('input[type="checkbox"]');
         checkbox.addEventListener('change', function() {
             const icon = this.nextElementSibling.querySelector('i');
-            if(this.checked) {
+            if (this.checked) {
                 icon.classList.remove('opacity-0');
                 icon.classList.add('opacity-100');
             } else {
@@ -191,4 +199,5 @@
         });
     </script>
 </body>
+
 </html>
