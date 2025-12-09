@@ -23,7 +23,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => 'nullable|string|min:4|confirmed',
             'current_password' => 'nullable|required_with:password|current_password',
         ]);
 
@@ -58,5 +58,27 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('users.edit')->with('success', 'Avatar updated successfully.');
+    }
+
+    // Tambahkan method ini
+    public function removeAvatar(Request $request)
+    {
+        $user = Auth::user();
+
+        // Check if user has an avatar
+        if ($user->avatar) {
+            // Delete the file from storage
+            if (Storage::exists('public/' . $user->avatar)) {
+                Storage::delete('public/' . $user->avatar);
+            }
+
+            // Remove avatar reference from database
+            $user->avatar = null;
+            $user->save();
+
+            return redirect()->route('users.edit')->with('success', 'Profile picture removed successfully.');
+        }
+
+        return redirect()->route('users.edit')->with('error', 'No profile picture to remove.');
     }
 }

@@ -9,11 +9,8 @@ use Illuminate\Http\Request;
 class ProgramDetailController extends Controller
 {
     // STEP 1 - Form program detail
-    public function create($programId)
+    public function create(Program $program)
     {
-        $program = Program::findOrFail($programId);
-
-        // kembali ke view step 1
         return view('programDetails.create', compact('program'));
     }
 
@@ -34,7 +31,7 @@ class ProgramDetailController extends Controller
         $detail = ProgramDetail::create($validated);
 
         // Redirect ke halaman struktur kurikulum (STEP 2)
-        return redirect()->route('structure.create', ['id' => $detail->id]);
+        return redirect()->route('structure.create', ['programDetail' => $detail->id]);
     }
 
     public function show(ProgramDetail $programDetail)
@@ -61,7 +58,7 @@ class ProgramDetailController extends Controller
 
         $programDetail->update($validated);
 
-        return redirect()->route('programdetail.show', $programDetail->id)
+        return redirect()->route('programdetail.show', $programDetail)
             ->with('success', 'Program detail updated!');
     }
 

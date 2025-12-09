@@ -11,20 +11,9 @@
         @if (session('success'))
             <div id="flash-success" data-type="success" data-message="{{ session('success') }}" style="display: none;"></div>
         @endif
-
         @if (session('error'))
             <div id="flash-error" data-type="error" data-message="{{ session('error') }}" style="display: none;"></div>
         @endif
-
-        @if (session('warning'))
-            <div id="flash-warning" data-type="warning" data-message="{{ session('warning') }}" style="display: none;">
-            </div>
-        @endif
-
-        @if (session('info'))
-            <div id="flash-info" data-type="info" data-message="{{ session('info') }}" style="display: none;"></div>
-        @endif
-
 
         <!-- Breadcrumb -->
         <nav class="flex pb-5" aria-label="Breadcrumb">
@@ -42,7 +31,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 9 4-4-4-4" />
                         </svg>
-                        <a href="{{ route('eventNews.index') }}"
+                        <a href=""
                             class="ms-1 text-sm font-medium text-gray-700 hover:text-blue-600">
                             Event News
                         </a>
@@ -68,14 +57,38 @@
                     </p>
                 </div>
                 @if (isset($event) && $event)
-                    <a href="{{ route('eventNews.create', $event->id) }}"
-                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                        Add News
-                    </a>
+                    @can('add-eventNews')
+                        <a href="{{ route('eventNews.create', $event->id) }}"
+                            class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-sm hover:shadow-md">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            Add News
+                        </a>
+                    @else
+                        <!-- Disabled Add News Button -->
+                        <div class="relative group">
+                            <button disabled
+                                class="inline-flex items-center gap-2 px-5 py-2.5 text-gray-400 font-medium rounded-lg bg-gray-100 cursor-not-allowed shadow-sm">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                </svg>
+                                Add News
+                                <svg class="w-4 h-4 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
+                            <!-- Tooltip -->
+                            <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 top-full left-1/2 transform -translate-x-1/2 mt-2 px-3 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700">
+                                <span class="flex items-center">
+                                    You don't have permission to add event news
+                                </span>
+                                <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                            </div>
+                        </div>
+                    @endcan
                 @else
                     <div class="text-sm text-gray-500">
                         Select an event to add news
@@ -136,32 +149,77 @@
                                         </div>
                                         <div class="flex gap-2">
                                             <!-- Edit Button -->
-                                            <a href="{{ route('eventNews.edit', $news->id) }}"
-                                                class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm font-medium">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg>
-                                                Edit
-                                            </a>
-
-                                            <!-- Delete Button -->
-                                            <form action="{{ route('eventNews.destroy', $news->id) }}" method="POST"
-                                                onsubmit="return confirm('Are you sure you want to delete this news?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit"
-                                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all duration-200 text-sm font-medium">
+                                            @can('update-eventNews')
+                                                <a href="{{ route('eventNews.edit', $news->id) }}"
+                                                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-blue-200 text-blue-600 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 text-sm font-medium">
                                                     <svg class="w-4 h-4" fill="none" stroke="currentColor"
                                                         viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                                     </svg>
-                                                    Delete
-                                                </button>
-                                            </form>
+                                                    Edit
+                                                </a>
+                                            @else
+                                                <!-- Disabled Edit Button -->
+                                                <div class="relative group">
+                                                    <button disabled
+                                                        class="inline-flex items-center gap-2 px-4 py-2 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed text-sm font-medium">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                        </svg>
+                                                        Edit
+                                                    </button>
+                                                    <!-- Tooltip -->
+                                                    <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 top-full left-0 mt-2 px-2 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 w-20">
+                                                        <span class="flex items-center">
+                                                            You don't have permission to edit event news
+                                                        </span>
+                                                        <div class="absolute bottom-full left-4 transform border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                                                    </div>
+                                                </div>
+                                            @endcan
+
+                                            <!-- Delete Button -->
+                                            @can('delete-eventNews')
+                                                <form action="{{ route('eventNews.destroy', $news->id) }}" method="POST"
+                                                    onsubmit="return confirm('Are you sure you want to delete this news?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit"
+                                                        class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all duration-200 text-sm font-medium">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <!-- Disabled Delete Button -->
+                                                <div class="relative group">
+                                                    <button disabled
+                                                        class="inline-flex items-center gap-2 px-4 py-2 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed text-sm font-medium">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                            viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                        </svg>
+                                                        Delete
+                                                    </button>
+                                                    <!-- Tooltip -->
+                                                    <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 top-full left-0 mt-2 px-2 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700 w-25">
+                                                        <span class="flex items-center">
+                                                            You don't have permission to delete event news
+                                                        </span>
+                                                        <div class="absolute bottom-full left-4 transform border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                                                    </div>
+                                                </div>
+                                            @endcan
                                         </div>
                                     </div>
 
@@ -202,14 +260,16 @@
                             @endif
                         </p>
                         @if (isset($event) && $event)
-                            <a href="{{ route('eventNews.create', $event->id) }}"
-                                class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                </svg>
-                                Add First News
-                            </a>
+                            @can('add-eventNews')
+                                <a href="{{ route('eventNews.create', $event->id) }}"
+                                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-all duration-200">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                    Add First News
+                                </a>
+                            @endcan
                         @endif
                     </div>
                 @endif
@@ -233,34 +293,82 @@
                         <div>
                             @if (isset($event) && $event)
                                 <!-- Delete All for specific event -->
-                                <form action="{{ route('eventNews.destroyAllByEvent', $event->id) }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete ALL news for this event? This action cannot be undone.')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="inline-flex items-center gap-2 px-5 py-2.5 text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:border-red-300 transition-all duration-200 font-medium">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                        Delete All News
-                                    </button>
-                                </form>
+                                @can('delete-eventNews')
+                                    <form action="{{ route('eventNews.destroyAllByEvent', $event->id) }}" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete ALL news for this event? This action cannot be undone.')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-2 px-5 py-2.5 text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:border-red-300 transition-all duration-200 font-medium">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Delete All News
+                                        </button>
+                                    </form>
+                                @else
+                                    <!-- Disabled Delete All Button -->
+                                    <div class="relative group">
+                                        <button disabled
+                                            class="inline-flex items-center gap-2 px-5 py-2.5 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed font-medium">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Delete All News
+                                            <svg class="w-4 h-4 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                        <!-- Tooltip -->
+                                        <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700">
+                                            <span class="flex items-center">
+                                                You don't have permission to delete event news
+                                            </span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                                        </div>
+                                    </div>
+                                @endcan
                             @else
                                 <!-- Delete All for all event news -->
-                                <form action="{{ route('eventNews.destroyAll') }}" method="POST"
-                                    onsubmit="return confirm('Are you sure you want to delete ALL event news? This action cannot be undone.')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="inline-flex items-center gap-2 px-5 py-2.5 text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:border-red-300 transition-all duration-200 font-medium">
-                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                        Delete All Event News
-                                    </button>
-                                </form>
+                                @can('delete-eventNews')
+                                    <form action="{{ route('eventNews.destroyAll') }}" method="POST"
+                                        onsubmit="return confirm('Are you sure you want to delete ALL event news? This action cannot be undone.')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="inline-flex items-center gap-2 px-5 py-2.5 text-red-600 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 hover:border-red-300 transition-all duration-200 font-medium">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Delete All Event News
+                                        </button>
+                                    </form>
+                                @else
+                                    <!-- Disabled Delete All Button -->
+                                    <div class="relative group">
+                                        <button disabled
+                                            class="inline-flex items-center gap-2 px-5 py-2.5 text-gray-400 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed font-medium">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                            Delete All Event News
+                                            <svg class="w-4 h-4 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </button>
+                                        <!-- Tooltip -->
+                                        <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700">
+                                            <span class="flex items-center">
+                                                You don't have permission to delete event news
+                                            </span>
+                                            <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                                        </div>
+                                    </div>
+                                @endcan
                             @endif
                         </div>
                     @endif
@@ -309,7 +417,6 @@
             from {
                 width: 100%;
             }
-
             to {
                 width: 0%;
             }
@@ -338,26 +445,6 @@
             `,
                 iconBg: 'bg-red-100 dark:bg-red-800',
                 iconColor: 'text-red-500 dark:text-red-200'
-            },
-            warning: {
-                bg: 'bg-yellow-500',
-                icon: `
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"/>
-                </svg>
-            `,
-                iconBg: 'bg-yellow-100 dark:bg-yellow-800',
-                iconColor: 'text-yellow-500 dark:text-yellow-200'
-            },
-            info: {
-                bg: 'bg-blue-500',
-                icon: `
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                </svg>
-            `,
-                iconBg: 'bg-blue-100 dark:bg-blue-800',
-                iconColor: 'text-blue-500 dark:text-blue-200'
             }
         };
 
@@ -415,7 +502,6 @@
 
         // Handle flash messages on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Handle semua jenis flash messages
             const flashTypes = ['success', 'error', 'warning', 'info'];
 
             flashTypes.forEach(type => {
@@ -423,6 +509,17 @@
                 if (element) {
                     showToast(type, element.dataset.message);
                     element.remove();
+                }
+            });
+
+            // Prevent disabled buttons from clicking
+            document.querySelectorAll('button[disabled]').forEach(button => {
+                if (button.classList.contains('cursor-not-allowed')) {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        showToast('error', 'You do not have permission to access this feature');
+                    });
                 }
             });
         });

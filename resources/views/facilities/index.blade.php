@@ -218,17 +218,6 @@
                     </svg>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">No facilities yet</h3>
                     <p class="text-gray-500 dark:text-gray-400 mb-6">Get started by adding your first facility.</p>
-
-                    @can('add-facility')
-                        <button data-modal-target="addFacilityModal" data-modal-toggle="addFacilityModal"
-                            class="inline-flex items-center px-4 py-2.5 text-white font-medium rounded-lg bg-sky-700 hover:bg-sky-800 dark:bg-sky-600 dark:hover:bg-sky-700">
-                            <svg class="w-5 h-5 me-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                                </path>
-                            </svg>
-                            Add Your First Facility
-                        </button>
-                    @endcan
                 </div>
             </div>
         @endif

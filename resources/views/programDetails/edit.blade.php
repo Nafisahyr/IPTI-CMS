@@ -177,7 +177,7 @@
         <div class="p-6">
             <h2 class="text-xl font-semibold text-gray-800 mb-4">Edit Curriculum Structure</h2>
 
-            <form action="{{ route('curriculum-structure.storeAll', $programDetail->id) }}" method="POST" id="curriculumForm">
+            <form action="{{ route('structure.store.all', $programDetail->id) }}" method="POST" id="curriculumForm">
                 @csrf
 
                 <div id="structure-container" class="space-y-4">

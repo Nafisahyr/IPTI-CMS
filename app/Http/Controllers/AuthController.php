@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -29,13 +31,29 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        // Assign default role (misalnya 'user')
+        $user->assignRole('user');
+
         // Bisa login langsung
         Auth::login($user);
 
+        // Update last login
+        $user->update([
+            'last_login_at' => Carbon::now()
+        ]);
+
+        // Log registration activity
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'description' => "{$user->name} registered a new account",
+            'event' => 'register',
+            'properties' => [
+                'registration_time' => Carbon::now()->toDateTimeString(),
+            ]
+        ]);
+
         return redirect()->route('dashboard')->with('success', 'Registrasi berhasil');
     }
-
-
 
     public function login(Request $request)
     {
@@ -54,12 +72,43 @@ class AuthController extends Controller
             return back()->with('error', 'Email atau password salah');
         }
 
+        // Update last login
+        $user = Auth::user();
+        $user->update([
+            'last_login_at' => Carbon::now()
+        ]);
+
+        // Log login activity
+        ActivityLog::create([
+            'user_id' => $user->id,
+            'description' => "{$user->name} logged in to the system",
+            'event' => 'login',
+            'properties' => [
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'login_time' => Carbon::now()->toDateTimeString(),
+            ]
+        ]);
+
         return redirect()->route('dashboard');
     }
 
-
     public function logout(Request $request)
     {
+        // Log logout activity sebelum logout
+        if (Auth::check()) {
+            $user = Auth::user();
+
+            ActivityLog::create([
+                'user_id' => $user->id,
+                'description' => "{$user->name} logged out from the system",
+                'event' => 'logout',
+                'properties' => [
+                    'logout_time' => Carbon::now()->toDateTimeString(),
+                ]
+            ]);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();

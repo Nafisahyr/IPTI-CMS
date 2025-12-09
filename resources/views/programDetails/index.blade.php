@@ -11,18 +11,8 @@
         @if (session('success'))
             <div id="flash-success" data-type="success" data-message="{{ session('success') }}" style="display: none;"></div>
         @endif
-
         @if (session('error'))
             <div id="flash-error" data-type="error" data-message="{{ session('error') }}" style="display: none;"></div>
-        @endif
-
-        @if (session('warning'))
-            <div id="flash-warning" data-type="warning" data-message="{{ session('warning') }}" style="display: none;">
-            </div>
-        @endif
-
-        @if (session('info'))
-            <div id="flash-info" data-type="info" data-message="{{ session('info') }}" style="display: none;"></div>
         @endif
 
         <nav class="flex pb-5" aria-label="Breadcrumb">
@@ -40,7 +30,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 9 4-4-4-4" />
                         </svg>
-                        <a href="#"
+                        <a href=""
                             class="ms-1 text-sm font-medium text-gray-700 hover:text-sky-900 md:ms-2 dark:text-gray-400 dark:hover:text-white">Program
                             Detail</a>
                     </div>
@@ -52,7 +42,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m1 9 4-4-4-4" />
                         </svg>
-                        <a href="#"
+                        <a href=""
                             class="ms-1 text-sm font-medium text-gray-700 hover:text-sky-900 md:ms-2 dark:text-gray-400 dark:hover:text-white">View</a>
                     </div>
                 </li>
@@ -84,8 +74,30 @@
                         aria-current="page">View</a>
                 </li>
                 <li class="w-full focus-within:z-10">
-                    <a href="{{ route('programdetail.edit', $programDetail->id) }}"
-                        class="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 rounded-lg hover:text-gray-700 hover:bg-gray-50 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">Edit</a>
+                    @can('update-programDetail')
+                        <a href="{{ route('programdetail.edit', $programDetail->id) }}"
+                            class="inline-block w-full p-4 bg-white border-r border-gray-200 dark:border-gray-700 rounded-lg hover:text-gray-700 hover:bg-gray-50 focus:outline-none dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700">
+                            Edit
+                        </a>
+                    @else
+                        <!-- Disabled Edit Tab -->
+                        <div class="relative group">
+                            <div
+                                class="inline-block w-full p-4 text-gray-400 bg-gray-100 border-r border-gray-200 dark:border-gray-700 rounded-lg cursor-not-allowed">
+                                Edit
+                                <svg class="w-3 h-3 inline-block ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <!-- Tooltip -->
+                            <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700">
+                                <span class="flex items-center">
+                                    You don't have permission to edit program details
+                                </span>
+                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                            </div>
+                        </div>
+                    @endcan
                 </li>
             </ul>
         </div>
@@ -201,7 +213,7 @@
             <!-- Footer Actions -->
             <div class="border-t border-gray-200 p-6 bg-gray-50">
                 <div class="flex justify-between items-center">
-                    <!-- Tombol Back -->
+                    <!-- Tombol Back (Always enabled) -->
                     <a href="{{ route('programs.index') }}"
                         class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -212,20 +224,45 @@
                     </a>
 
                     <!-- Tombol Delete -->
-                    <form action="{{ route('programdetail.destroy', $programDetail->id) }}" method="POST"
-                        class="inline">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" onclick="return confirm('Are you sure you want to delete this program?')"
-                            class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                </path>
-                            </svg>
-                            <span>Delete Program</span>
-                        </button>
-                    </form>
+                    @can('delete-programDetail')
+                        <form action="{{ route('programdetail.destroy', $programDetail->id) }}" method="POST"
+                            class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" onclick="return confirm('Are you sure you want to delete this program?')"
+                                class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                                <span>Delete Program</span>
+                            </button>
+                        </form>
+                    @else
+                        <!-- Disabled Delete Button -->
+                        <div class="relative group">
+                            <button disabled
+                                class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-400 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                    </path>
+                                </svg>
+                                <span>Delete Program</span>
+                                <svg class="w-3 h-3 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
+                            <!-- Tooltip -->
+                            <div class="absolute z-10 invisible opacity-0 group-hover:visible group-hover:opacity-100 transition-all duration-300 bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-2 text-xs font-medium text-white bg-gray-900 rounded-lg shadow-sm dark:bg-gray-700">
+                                <span class="flex items-center">
+                                    You don't have permission to delete program details
+                                </span>
+                                <div class="absolute top-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-t-gray-900 dark:border-t-gray-700"></div>
+                            </div>
+                        </div>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -270,7 +307,6 @@
                 from {
                     width: 100%;
                 }
-
                 to {
                     width: 0%;
                 }
@@ -299,26 +335,6 @@
             `,
                     iconBg: 'bg-red-100 dark:bg-red-800',
                     iconColor: 'text-red-500 dark:text-red-200'
-                },
-                warning: {
-                    bg: 'bg-yellow-500',
-                    icon: `
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"/>
-                </svg>
-            `,
-                    iconBg: 'bg-yellow-100 dark:bg-yellow-800',
-                    iconColor: 'text-yellow-500 dark:text-yellow-200'
-                },
-                info: {
-                    bg: 'bg-blue-500',
-                    icon: `
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-                </svg>
-            `,
-                    iconBg: 'bg-blue-100 dark:bg-blue-800',
-                    iconColor: 'text-blue-500 dark:text-blue-200'
                 }
             };
 
@@ -376,7 +392,6 @@
 
             // Handle flash messages on page load
             document.addEventListener('DOMContentLoaded', function() {
-                // Handle semua jenis flash messages
                 const flashTypes = ['success', 'error', 'warning', 'info'];
 
                 flashTypes.forEach(type => {
@@ -384,6 +399,17 @@
                     if (element) {
                         showToast(type, element.dataset.message);
                         element.remove();
+                    }
+                });
+
+                // Prevent disabled edit tab from navigating
+                document.querySelectorAll('a[href="#"]').forEach(link => {
+                    if (link.closest('li').querySelector('div.cursor-not-allowed')) {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            showToast('error', 'You do not have permission to edit program details');
+                        });
                     }
                 });
             });
